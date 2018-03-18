@@ -1,0 +1,52 @@
+imports:
+    - { resource: "./Resources/config/services.yml" }
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        connections:
+            house_keeper_telemetry_data_mysql_conn:
+                driver: pdo_mysql
+                host: '%database_host%'
+                port: '%database_port%'
+                dbname: '%database_name%'
+                user: '%database_user%'
+                password: '%database_password%'
+                charset: UTF8
+                # if using pdo_sqlite as your database driver:
+                #   1. add the path in parameters.yml
+                #     e.g. database_path: '%kernel.project_dir%/var/data/data.sqlite'
+                #   2. Uncomment database_path in parameters.yml.dist
+                #   3. Uncomment next line:
+                #path: '%database_path%'
+            things_board_telemetry_pgsql_conn:
+                driver: pdo_pgsql
+                host: '%database_host_things_board%'
+                port: '%database_port_things_board%'
+                dbname: '%database_name_things_board%'
+                user: '%database_user_things_board%'
+                password: '%database_password_things_board%'
+                charset: UTF8
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        entity_managers:
+            house_keeper_telemetry_data_mysql:
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                connection: house_keeper_telemetry_data_mysql_conn
+                mappings:
+                    TBStatBundle:
+                        dir: '%things.board.stat.bundle.dir%/Entity/MySQL'
+                        is_bundle: false
+                        type: annotation
+                        prefix: 'TBStatBundle\Entity'
+                
+            things_board_telemetry_pgsql:
+                naming_strategy: doctrine.orm.naming_strategy.underscore
+                connection: things_board_telemetry_pgsql_conn
+                mappings:
+                    TBStatBundle:
+                        dir: '%things.board.stat.bundle.dir%/Entity/PostgreSQL'
+                        is_bundle: false
+                        type: annotation
+                        prefix: 'TBStatBundle\Entity'
